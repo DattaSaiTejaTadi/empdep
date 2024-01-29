@@ -1,0 +1,16 @@
+Create a server to maintain the CRUD operation of employees.
+
+Every employee has id(UUID),name,DOB,Majors
+Ensure that every employee is greater than 22.
+Majors include: CSE, MCA, B.Com, CA, MBA
+Every employee belongs to a department and every department has an id(int), name, and floor where the name can only be HR,
+accounts, and Tech
+An Employee with majors in CSE and MCA can only belong to the tech dept.
+An employee with majors in B.Com/CA can belong only to the accounts dept.
+An employee with a major in MBA can belong only to the HR dept
+Create endpoints to create department and employee also create endpoints to update entities
+GetAll will list employees. Should be filterable by name
+if a flag called include Dept is set to true in GetAll - list the department details as well
+In getByID include department details always
+Include endpoints to delete an employee and department as well.
+Follow the REST API guidelines that were covered earlier
