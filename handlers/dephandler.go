@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 
@@ -47,6 +48,7 @@ func (h *handler) CreateDepartment(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid JSON data", http.StatusBadRequest)
 		return
 	}
+	fmt.Print(department)
 	var createdDepartment models.Department
 	createdDepartment, err = h.app.CreateDepartment(ctx, department)
 	if err != nil {

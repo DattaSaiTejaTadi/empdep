@@ -14,5 +14,5 @@ type App interface {
 	CreateEmployee(ctx context.Context, employee models.Employee) (models.Employee, error)
 	UpdateEmployee(ctx context.Context, employee models.Employee) (models.Employee, error)
 	DeleteEmployee(ctx context.Context, employee models.Employee) error
-	GetEmployee(ctx context.Context) ([]models.Employee, error)
+	GetEmployee(ctx context.Context) (models.Employees, error)
 }

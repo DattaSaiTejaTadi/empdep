@@ -1,15 +1,19 @@
 package models
 
 import (
-	"time"
-
 	"github.com/google/uuid"
 )
 
 type Employee struct {
 	ID         uuid.UUID `json:"id"`
 	Name       string    `json:"name"`
-	DOB        time.Time `json:"dob"`
+	DOB        string    `json:"dob"`
 	Major      string    `json:"major"`
-	Department int       `json:"department"`
+	Department uuid.UUID `json:"department"`
+	DepName    string    `json:"departmentName"`
+}
+
+type Employees struct {
+	EmployeesCount int        `json:"EmployeesCount"`
+	EmployeesData  []Employee `json:"EmployeesData"`
 }

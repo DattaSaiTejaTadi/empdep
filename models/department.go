@@ -1,7 +1,9 @@
 package models
 
+import "github.com/google/uuid"
+
 type Department struct {
-	ID    int    `json:"id,omitempty"`
-	Name  string `json:"name,omitempty"`
-	Floor int    `json:"floor,omitempty"`
+	ID    uuid.UUID `json:"id,omitempty"`
+	Name  string    `json:"name,omitempty"`
+	Floor int       `json:"floor,omitempty"`
 }
