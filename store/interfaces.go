@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/LetsFocus/account-service/empdep/models"
+	"github.com/google/uuid"
 )
 
 type Store interface {
@@ -14,6 +15,6 @@ type Store interface {
 	CreateEmployee(ctx context.Context, employee models.Employee) (models.Employee, error)
 	UpdateEmployee(ctx context.Context, employee models.Employee) (models.Employee, error)
 	DeleteEmployee(ctx context.Context, employee models.Employee) error
-	GetEmployee(ctx context.Context) ([]models.Employee, error)
-	GetDepartmentID(major string) (int, error)
+	GetEmployee(ctx context.Context) (models.Employees, error)
+	GetDepartmentID(major string) (uuid.UUID, string, error)
 }

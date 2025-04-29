@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/LetsFocus/account-service/empdep/models"
+	"github.com/google/uuid"
 )
 
 func (s *store) GetDepatments(ctx context.Context) ([]models.Department, error) {
@@ -24,8 +25,8 @@ func (s *store) GetDepatments(ctx context.Context) ([]models.Department, error) 
 }
 func (s *store) CreateDepartment(ctx context.Context, department models.Department) (models.Department, error) {
 	query := `
-	INSERT INTO department (name, floor)
-	VALUES ($1, $2)
+	INSERT INTO department (id,name, floor)
+	VALUES ($1, $2, $3)
 	RETURNING id, name, floor
 `
 	// Prepare the statement.
@@ -36,7 +37,7 @@ func (s *store) CreateDepartment(ctx context.Context, department models.Departme
 	defer stmt.Close()
 	// Execute the statement and scan the result.
 	var createdDepartment models.Department
-	err = stmt.QueryRowContext(ctx, department.Name, department.Floor).Scan(
+	err = stmt.QueryRowContext(ctx, department.ID, department.Name, department.Floor).Scan(
 		&createdDepartment.ID, &createdDepartment.Name, &createdDepartment.Floor,
 	)
 	if err != nil {
@@ -78,23 +79,24 @@ func (s *store) DeleteDepartment(ctx context.Context, department models.Departme
 
 	return nil
 }
-func (s *store) GetDepartmentID(major string) (int, error) {
-	var Dept int
+func (s *store) GetDepartmentID(major string) (uuid.UUID, string, error) {
+	var Dept uuid.UUID
+	var DepName string
 	var dberr error
-	statement := "select id from department where name=$1"
+	statement := "select id, name from department where name=$1"
 	stmt, err := s.db.Prepare(statement)
 	if err != nil {
-		return 0, err
+		return uuid.UUID{}, "", err
 	}
 	if major == "MBA" {
-		dberr = stmt.QueryRow("HR").Scan(&Dept)
+		dberr = stmt.QueryRow("HR").Scan(&Dept, &DepName)
 	} else if major == "CSE" || major == "MCA" {
-		dberr = stmt.QueryRow("TECH").Scan(&Dept)
+		dberr = stmt.QueryRow("TECH").Scan(&Dept, &DepName)
 	} else if major == "B.COM" || major == "CA" {
-		dberr = stmt.QueryRow("ACCOUNTS").Scan(&Dept)
+		dberr = stmt.QueryRow("ACCOUNTS").Scan(&Dept, &DepName)
 	}
 	if dberr != nil {
-		return 0, dberr
+		return uuid.UUID{}, "", dberr
 	}
-	return Dept, nil
+	return Dept, DepName, nil
 }

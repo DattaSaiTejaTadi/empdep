@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 
@@ -47,6 +48,7 @@ func (h *handler) CreateEmployee(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid JSON data", http.StatusBadRequest)
 		return
 	}
+	fmt.Println(employee)
 	var createdEmployee models.Employee
 	createdEmployee, err = h.app.CreateEmployee(ctx, employee)
 	if err != nil {
@@ -89,12 +91,14 @@ func (h *handler) UpdateEmployee(w http.ResponseWriter, r *http.Request) {
 	var updatedEmployee models.Employee
 	updatedEmployee, err = h.app.UpdateEmployee(ctx, employee)
 	if err != nil {
+		fmt.Print(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 		return
 	}
 	jsData, err := json.Marshal(updatedEmployee)
 	if err != nil {
+		fmt.Print(err)
 		w.WriteHeader(http.StatusInternalServerError)
 		w.Write([]byte(err.Error()))
 		return
